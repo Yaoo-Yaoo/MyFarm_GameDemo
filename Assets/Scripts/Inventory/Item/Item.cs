@@ -5,11 +5,10 @@ namespace MyFarm.Inventory
     public class Item : MonoBehaviour
     {
         public int itemID;
+        public ItemDetails itemDetails;
 
         private SpriteRenderer spriteRenderer;
         private BoxCollider2D coll;
-
-        private ItemDetails itemDetails;
 
         private void Awake()
         {
