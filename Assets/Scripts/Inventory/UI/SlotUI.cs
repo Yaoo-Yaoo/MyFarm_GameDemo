@@ -111,16 +111,16 @@ namespace MyFarm.Inventory
                 // 清除所有高亮
                 inventoryUI.UpdateHighlight(-1);
             }
-            else  // 扔到世界场景中
-            {
-                if (itemDetails.canDropped)
-                {
-                    // 鼠标对应的世界坐标
-                    Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-
-                    EventHandler.CallInstantiateItemInScene(itemDetails.itemID, pos);
-                }
-            }
+            // else  // 测试：扔到世界场景中
+            // {
+            //     if (itemDetails.canDropped)
+            //     {
+            //         // 鼠标对应的世界坐标
+            //         Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+            //
+            //         EventHandler.CallInstantiateItemInScene(itemDetails.itemID, pos);
+            //     }
+            // }
         }
     }
 }
