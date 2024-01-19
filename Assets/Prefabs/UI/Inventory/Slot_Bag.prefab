@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6397746556000491216}
   - component: {fileID: 6397746556000491222}
   - component: {fileID: 6397746556000491217}
+  - component: {fileID: 5131613013758249843}
   m_Layer: 5
   m_Name: Highlight
   m_TagString: Untagged
@@ -76,6 +77,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &5131613013758249843
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6397746556000491219}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4b81bbb7e46962e47a67800a8db757d5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6397746556712622139
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +315,23 @@ MonoBehaviour:
   amountText: {fileID: 6397746557572649040}
   slotHighlight: {fileID: 6397746556000491217}
   button: {fileID: 6397746556745934486}
+  slotType: 0
+  isSelected: 0
+  itemDetails:
+    itemID: 0
+    itemName: 
+    itemType: 0
+    itemIcon: {fileID: 0}
+    itemOnWorldSprite: {fileID: 0}
+    itemDescription: 
+    itemUseRadius: 0
+    canPickedup: 0
+    canDropped: 0
+    canCarried: 0
+    itemPrice: 0
+    sellPercentage: 0
+  itemAmount: 0
+  slotIndex: 0
 --- !u!1 &6397746557572649042
 GameObject:
   m_ObjectHideFlags: 0
