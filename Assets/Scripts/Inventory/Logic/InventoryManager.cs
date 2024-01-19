@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MyFarm.Inventory
@@ -9,7 +10,12 @@ namespace MyFarm.Inventory
 
         [Header("背包数据")] 
         public InventoryBag_SO playerBag;
-        
+
+        private void Start()
+        {
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
+        }
+
         /// <summary>
         /// 返回编号ID的物品明细
         /// </summary>
@@ -34,6 +40,9 @@ namespace MyFarm.Inventory
             
             if (toDestroy)
                 Destroy(item.gameObject);
+            
+            // 更新 UI
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
         
         /// <summary>
