@@ -1,11 +1,15 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MyFarm.Inventory
 {
     public class InventoryUI : MonoBehaviour
     {
+        [Header("拖拽图片")] 
+        public Image dragItem;
+        
+        [Header("UI信息")]
         [SerializeField] private GameObject bagUI;
         private bool bagOpened;
         
