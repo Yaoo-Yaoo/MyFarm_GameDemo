@@ -6,6 +6,9 @@ namespace MyFarm.Inventory
 {
     public class InventoryUI : MonoBehaviour
     {
+        [SerializeField] private GameObject bagUI;
+        private bool bagOpened;
+        
         [SerializeField] private SlotUI[] playerSlots;
 
         private void OnEnable()
@@ -24,8 +27,18 @@ namespace MyFarm.Inventory
             {
                 playerSlots[i].slotIndex = i;
             }
+
+            bagOpened = bagUI.activeInHierarchy;
         }
-        
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                OpenBagUI();
+            }
+        }
+
         private void OnUpdateInventoryUI(InventoryLocation location, List<InventoryItem> list)
         {
             switch (location)
@@ -45,6 +58,12 @@ namespace MyFarm.Inventory
                     }
                     break;
             }
+        }
+
+        public void OpenBagUI()
+        {
+            bagOpened = !bagOpened;
+            bagUI.SetActive(bagOpened);
         }
     }
 }
