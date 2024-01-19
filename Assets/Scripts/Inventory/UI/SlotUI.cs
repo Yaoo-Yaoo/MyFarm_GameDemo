@@ -94,7 +94,33 @@ namespace MyFarm.Inventory
         public void OnEndDrag(PointerEventData eventData)
         {
             inventoryUI.dragItem.enabled = false;
-            Debug.Log(eventData.pointerCurrentRaycast.gameObject.name);
+            // Debug.Log(eventData.pointerCurrentRaycast.gameObject);
+
+            if (eventData.pointerCurrentRaycast.gameObject != null)  // UI 格子交换
+            {
+                SlotUI targetSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<SlotUI>();
+                if (targetSlot == null)
+                    return;
+                
+                // 在 Player 自身背包范围内交换
+                if (slotType == SlotType.Bag && targetSlot.slotType == SlotType.Bag)
+                {
+                    InventoryManager.Instance.SwapItem(slotIndex, targetSlot.slotIndex);
+                }
+                
+                // 清除所有高亮
+                inventoryUI.UpdateHighlight(-1);
+            }
+            else  // 扔到世界场景中
+            {
+                if (itemDetails.canDropped)
+                {
+                    // 鼠标对应的世界坐标
+                    Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+
+                    EventHandler.CallInstantiateItemInScene(itemDetails.itemID, pos);
+                }
+            }
         }
     }
 }

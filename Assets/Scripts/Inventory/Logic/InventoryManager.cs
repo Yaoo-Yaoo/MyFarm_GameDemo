@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace MyFarm.Inventory
@@ -100,6 +99,31 @@ namespace MyFarm.Inventory
                 InventoryItem item = new InventoryItem { itemID = ID, itemAmount = currentAmount };
                 playerBag.itemList[index] = item;
             }
+        }
+        
+        /// <summary>
+        /// 交换 Player 背包格子物品
+        /// </summary>
+        /// <param name="fromIndex">拖拽前格子坐标</param>
+        /// <param name="toIndex">拖拽后格子坐标</param>
+        public void SwapItem(int fromIndex, int targetIndex)
+        {
+            InventoryItem fromItem = playerBag.itemList[fromIndex];
+            InventoryItem targetItem = playerBag.itemList[targetIndex];
+
+            if (targetItem.itemID != 0)  // 交换
+            {
+                playerBag.itemList[fromIndex] = targetItem;
+                playerBag.itemList[targetIndex] = fromItem;
+            }
+            else  // 移过去
+            {
+                playerBag.itemList[targetIndex] = fromItem;
+                playerBag.itemList[fromIndex] = new InventoryItem();
+            }
+            
+            // 刷新 UI
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
     }
 }
