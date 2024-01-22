@@ -71,6 +71,9 @@ namespace MyFarm.Inventory
             isSelected = !isSelected;
             
             inventoryUI.UpdateHighlight(slotIndex);
+
+            if (slotType == SlotType.Bag)
+                EventHandler.CallItemSelectedEvent(itemDetails, isSelected);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
