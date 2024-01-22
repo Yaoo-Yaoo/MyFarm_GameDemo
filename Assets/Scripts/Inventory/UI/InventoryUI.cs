@@ -6,6 +6,8 @@ namespace MyFarm.Inventory
 {
     public class InventoryUI : MonoBehaviour
     {
+        public ItemTooltip itemTooltip;
+        
         [Header("拖拽图片")] 
         public Image dragItem;
         
