@@ -14,6 +14,12 @@ public class TimeManager : MonoBehaviour
         NewGameTime();
     }
 
+    private void Start()
+    {
+        EventHandler.CallGameMinuteEvent(gameMinute, gameHour);
+        EventHandler.CallGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
+    }
+
     private void Update()
     {
         if (!gameClockPause)
@@ -22,6 +28,15 @@ public class TimeManager : MonoBehaviour
             if (tikTime >= Settings.secondThreshold)
             {
                 tikTime -= Settings.secondThreshold;
+                UpdateGameTime();
+            }
+        }
+
+        // For test
+        if (Input.GetKey(KeyCode.T))
+        {
+            for (int i = 0; i < 60; i++)
+            {
                 UpdateGameTime();
             }
         }
@@ -85,9 +100,11 @@ public class TimeManager : MonoBehaviour
                         }
                     }
                 }
+                EventHandler.CallGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
             }
+            EventHandler.CallGameMinuteEvent(gameMinute, gameHour);
         }
-        
+
         // Debug.Log("Second: " + gameSecond + " , Minute: " + gameMinute);
     }
 }
