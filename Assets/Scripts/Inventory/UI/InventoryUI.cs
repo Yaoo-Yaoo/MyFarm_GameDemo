@@ -7,26 +7,33 @@ namespace MyFarm.Inventory
     public class InventoryUI : MonoBehaviour
     {
         public ItemTooltip itemTooltip;
-        
-        [Header("拖拽图片")] 
+
+        [Header("拖拽图片")]
         public Image dragItem;
-        
+
         [Header("UI信息")]
         [SerializeField] private GameObject bagUI;
         private bool bagOpened;
-        
+
         [SerializeField] private SlotUI[] playerSlots;
 
         private void OnEnable()
         {
             EventHandler.UpdateInventoryUI += OnUpdateInventoryUI;
+            EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
         }
-        
+
         private void OnDisable()
         {
             EventHandler.UpdateInventoryUI -= OnUpdateInventoryUI;
+            EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
         }
-        
+
+        private void OnBeforeSceneUnloadEvent()
+        {
+            UpdateHighlight(-1);
+        }
+
         private void Start()
         {
             for (int i = 0; i < playerSlots.Length; i++)
@@ -55,7 +62,7 @@ namespace MyFarm.Inventory
                         if (list[i].itemAmount > 0)
                         {
                             ItemDetails item = InventoryManager.Instance.GetItemDetails(list[i].itemID);
-                            playerSlots[i].UpdateSlot(item, list[i].itemAmount);    
+                            playerSlots[i].UpdateSlot(item, list[i].itemAmount);
                         }
                         else
                         {
@@ -65,7 +72,7 @@ namespace MyFarm.Inventory
                     break;
             }
         }
-        
+
         /// <summary>
         /// 控制背包的打开和关闭
         /// </summary>
@@ -74,7 +81,7 @@ namespace MyFarm.Inventory
             bagOpened = !bagOpened;
             bagUI.SetActive(bagOpened);
         }
-        
+
         /// <summary>
         /// 控制格子选中状态的高亮显示
         /// </summary>

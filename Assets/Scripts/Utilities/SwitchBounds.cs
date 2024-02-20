@@ -3,8 +3,17 @@ using Cinemachine;
 
 public class SwitchBounds : MonoBehaviour
 {
-    // TODO: 后续切换场景需要修改
-    private void Start()
+    private void OnEnable()
+    {
+        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
+    }
+
+    private void OnAfterSceneLoadedEvent()
     {
         SwitchConfinerShape();
     }
@@ -15,6 +24,6 @@ public class SwitchBounds : MonoBehaviour
         CinemachineConfiner confiner = GetComponent<CinemachineConfiner>();
         confiner.m_BoundingShape2D = confinerShape;
         // Call this if the bounding shape's points change at runtime
-        confiner.InvalidatePathCache();  
+        confiner.InvalidatePathCache();
     }
 }

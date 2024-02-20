@@ -12,16 +12,49 @@ public class Player : MonoBehaviour
 
     private Animator[] animators;
     private bool isMoving;
-    
+
+    private bool inputDisable;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animators = GetComponentsInChildren<Animator>();
     }
 
+    private void OnEnable()
+    {
+        EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
+        EventHandler.MoveToPosition += OnMoveToPosition;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
+        EventHandler.MoveToPosition -= OnMoveToPosition;
+    }
+
+    private void OnBeforeSceneUnloadEvent()
+    {
+        inputDisable = true;
+    }
+
+    private void OnAfterSceneLoadedEvent()
+    {
+        inputDisable = false;
+    }
+
+    private void OnMoveToPosition(Vector3 targetPos)
+    {
+        transform.position = targetPos;
+    }
+
     private void Update()
     {
-        PlayerInput();
+        if (!inputDisable)
+            PlayerInput();
+
         SwitchAnimation();
     }
 
@@ -40,7 +73,7 @@ public class Player : MonoBehaviour
             inputX *= 0.6f;
             inputY *= 0.6f;
         }
-        
+
         // 按住 Shift 减速，走路
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -49,7 +82,7 @@ public class Player : MonoBehaviour
         }
 
         movementInput = new Vector2(inputX, inputY);
-        
+
         isMoving = movementInput != Vector2.zero;
     }
 
