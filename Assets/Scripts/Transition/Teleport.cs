@@ -4,7 +4,7 @@ namespace MyFarm.Transition
 {
     public class Teleport : MonoBehaviour
     {
-        public string sceneToGo;
+        [SceneName] public string sceneToGo;
         public Vector3 positionToGo;
 
         void OnTriggerEnter2D(Collider2D other)

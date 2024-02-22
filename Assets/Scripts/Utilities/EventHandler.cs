@@ -57,4 +57,10 @@ public static class EventHandler
     {
         MoveToPosition?.Invoke(targetPosition);
     }
+
+    public static event Action PlayerCanMoveEvent;
+    public static void CallPlayerCanMoveEvent()
+    {
+        PlayerCanMoveEvent?.Invoke();
+    }
 }

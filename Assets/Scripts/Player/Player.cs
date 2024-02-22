@@ -24,14 +24,14 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
-        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
+        EventHandler.PlayerCanMoveEvent += OnPlayerCanMoveEvent;
         EventHandler.MoveToPosition += OnMoveToPosition;
     }
 
     private void OnDisable()
     {
         EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
-        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
+        EventHandler.PlayerCanMoveEvent -= OnPlayerCanMoveEvent;
         EventHandler.MoveToPosition -= OnMoveToPosition;
     }
 
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
         inputDisable = true;
     }
 
-    private void OnAfterSceneLoadedEvent()
+    private void OnPlayerCanMoveEvent()
     {
         inputDisable = false;
     }
@@ -54,13 +54,16 @@ public class Player : MonoBehaviour
     {
         if (!inputDisable)
             PlayerInput();
+        else
+            isMoving = false;
 
         SwitchAnimation();
     }
 
     private void FixedUpdate()
     {
-        Movement();
+        if (!inputDisable)
+            Movement();
     }
 
     private void PlayerInput()
