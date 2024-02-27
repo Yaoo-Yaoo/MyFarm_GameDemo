@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MyFarm.Map
 {
-    public class GridMapManager : MonoBehaviour
+    public class GridMapManager : Singleton<GridMapManager>
     {
         [Header("地图信息")]
         public List<MapData_SO> mapDataList;
@@ -69,6 +70,12 @@ namespace MyFarm.Map
             if (tileDetailsDict.ContainsKey(key))
                 return tileDetailsDict[key];
             return null;
+        }
+
+        public TileDetails GetTileDetailsOnMousePosition(Vector3Int mousePos)
+        {
+            string key = mousePos.x + "x" + mousePos.y + "y" + SceneManager.GetActiveScene().name;
+            return GetTileDetails(key);
         }
     }
 }

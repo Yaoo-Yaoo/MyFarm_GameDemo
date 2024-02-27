@@ -1,3 +1,4 @@
+using MyFarm.Map;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,6 +17,9 @@ public class CursorManager : MonoBehaviour
     private Vector3 mouseWorldPos;
     private Vector3Int mouseGridPos;
     private bool cursorEnabled;
+    private bool cursorPositionValid;
+    private ItemDetails currentItem;
+    private Transform playerTrans => FindObjectOfType<Player>().transform;
 
     private void OnEnable()
     {
@@ -67,7 +71,6 @@ public class CursorManager : MonoBehaviour
     private void OnAfterSceneLoadedEvent()
     {
         currentGrid = FindObjectOfType<Grid>();
-        cursorEnabled = true;
     }
 
     private void SetCursorImage(Sprite sprite)
@@ -76,14 +79,28 @@ public class CursorManager : MonoBehaviour
         cursorImage.color = Color.white;
     }
 
+    private void SetCursorValid()
+    {
+        cursorPositionValid = true;
+        cursorImage.color = Color.white;
+    }
+
+    private void SetCursorInValid()
+    {
+        cursorPositionValid = false;
+        cursorImage.color = new Color(1, 0, 0, 0.4f);
+    }
+
     private void OnItemSelectedEvent(ItemDetails itemDetails, bool isSelected)
     {
         if (!isSelected)
         {
             currentSprite = normal;
+            cursorEnabled = false;
         }
         else
         {
+            currentItem = itemDetails;
             switch (itemDetails.itemType)
             {
                 case ItemType.Seed:
@@ -99,6 +116,7 @@ public class CursorManager : MonoBehaviour
                     currentSprite = normal;
                     break;
             }
+            cursorEnabled = true;
         }
     }
 
@@ -108,6 +126,35 @@ public class CursorManager : MonoBehaviour
         mouseGridPos = currentGrid.WorldToCell(mouseWorldPos);
 
         // Debug.Log("WorldPos:" + mouseWorldPos + "    GridPos:" + mouseGridPos);
+
+        var playerGridPos = currentGrid.WorldToCell(playerTrans.position);
+
+        // 判断在使用范围内
+        if (Mathf.Abs(playerGridPos.x - mouseGridPos.x) > currentItem.itemUseRadius
+            || Mathf.Abs(playerGridPos.y - mouseGridPos.y) > currentItem.itemUseRadius)
+        {
+            SetCursorInValid();
+            return;
+        }
+
+        TileDetails currentTile = GridMapManager.Instance.GetTileDetailsOnMousePosition(mouseGridPos);
+
+        if (currentTile != null)
+        {
+            switch (currentItem.itemType)
+            {
+                case ItemType.Commodity:
+                    if (currentTile.canDropItem && currentItem.canDropped)
+                        SetCursorValid();
+                    else
+                        SetCursorInValid();
+                    break;
+            }
+        }
+        else
+        {
+            SetCursorInValid();
+        }
     }
 
     private bool InteractWithUI()
