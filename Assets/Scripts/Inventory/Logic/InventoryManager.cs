@@ -7,8 +7,23 @@ namespace MyFarm.Inventory
         [Header("物品数据")]
         public ItemDataList_SO itemDataListSO;
 
-        [Header("背包数据")] 
+        [Header("背包数据")]
         public InventoryBag_SO playerBag;
+
+        private void OnEnable()
+        {
+            EventHandler.DropItemEvent += OnDropItemEvent;
+        }
+
+        private void OnDisable()
+        {
+            EventHandler.DropItemEvent -= OnDropItemEvent;
+        }
+
+        private void OnDropItemEvent(int ID, Vector3 pos)
+        {
+            RemoveItem(ID, 1);
+        }
 
         private void Start()
         {
@@ -24,7 +39,7 @@ namespace MyFarm.Inventory
         {
             return itemDataListSO.itemDetailsList.Find(i => i.itemID == ID);
         }
-        
+
         /// <summary>
         /// 添加物品至 Player 背包
         /// </summary>
@@ -34,16 +49,16 @@ namespace MyFarm.Inventory
         {
             int index = GetItemIndexInBag(item.itemID);
             AddItemAtIndex(item.itemID, index, 1);
-            
+
             // Debug.Log("ID: " + GetItemDetails(item.itemID).itemID + " , Name: " + GetItemDetails(item.itemID).itemName);
-            
+
             if (toDestroy)
                 Destroy(item.gameObject);
-            
+
             // 更新 UI
             EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
-        
+
         /// <summary>
         /// 找到物品在背包中的序号
         /// </summary>
@@ -58,7 +73,7 @@ namespace MyFarm.Inventory
             }
             return -1;
         }
-        
+
         /// <summary>
         /// 检查背包是否有空位
         /// </summary>
@@ -72,7 +87,7 @@ namespace MyFarm.Inventory
             }
             return false;
         }
-        
+
         /// <summary>
         /// 在背包指定序号添加物品
         /// </summary>
@@ -100,7 +115,7 @@ namespace MyFarm.Inventory
                 playerBag.itemList[index] = item;
             }
         }
-        
+
         /// <summary>
         /// 交换 Player 背包格子物品
         /// </summary>
@@ -121,8 +136,27 @@ namespace MyFarm.Inventory
                 playerBag.itemList[targetIndex] = fromItem;
                 playerBag.itemList[fromIndex] = new InventoryItem();
             }
-            
+
             // 刷新 UI
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
+        }
+
+        public void RemoveItem(int ID, int removeAmount)
+        {
+            var index = GetItemIndexInBag(ID);
+
+            if (playerBag.itemList[index].itemAmount > removeAmount)
+            {
+                var amount = playerBag.itemList[index].itemAmount - removeAmount;
+                var item = new InventoryItem { itemID = ID, itemAmount = amount };
+                playerBag.itemList[index] = item;
+            }
+            else if (playerBag.itemList[index].itemAmount == removeAmount)
+            {
+                var item = new InventoryItem();
+                playerBag.itemList[index] = item;
+            }
+
             EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
     }

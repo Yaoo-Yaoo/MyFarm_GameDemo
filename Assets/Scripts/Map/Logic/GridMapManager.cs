@@ -12,6 +12,25 @@ namespace MyFarm.Map
         // 场景名字+坐标，对应的瓦片信息
         private Dictionary<string, TileDetails> tileDetailsDict = new Dictionary<string, TileDetails>();
 
+        private Grid currentGrid;
+
+        private void OnEnable()
+        {
+            EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
+            EventHandler.ExecuteActionAfterAnimation += OnExecuteActionAfterAnimation;
+        }
+
+        private void OnDisable()
+        {
+            EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
+            EventHandler.ExecuteActionAfterAnimation -= OnExecuteActionAfterAnimation;
+        }
+
+        private void OnAfterSceneLoadedEvent()
+        {
+            currentGrid = FindObjectOfType<Grid>();
+        }
+
         private void Start()
         {
             foreach (var mapData in mapDataList)
@@ -76,6 +95,23 @@ namespace MyFarm.Map
         {
             string key = mousePos.x + "x" + mousePos.y + "y" + SceneManager.GetActiveScene().name;
             return GetTileDetails(key);
+        }
+
+        private void OnExecuteActionAfterAnimation(Vector3 mouseWorldPos, ItemDetails itemDetails)
+        {
+            var mouseGridPos = currentGrid.WorldToCell(mouseWorldPos);
+            var currentTile = GetTileDetailsOnMousePosition(mouseGridPos);
+
+            if (currentTile != null)
+            {
+                //todo
+                switch (itemDetails.itemType)
+                {
+                    case ItemType.Commodity:
+                        EventHandler.CallDropItemEvent(itemDetails.itemID, mouseWorldPos);
+                        break;
+                }
+            }
         }
     }
 }

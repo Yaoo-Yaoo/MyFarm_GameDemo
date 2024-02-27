@@ -7,31 +7,31 @@ namespace MyFarm.Inventory
 {
     public class SlotUI : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        [Header("组件获取")] 
+        [Header("组件获取")]
         [SerializeField] private Image slotImage;
         [SerializeField] private TextMeshProUGUI amountText;
         public Image slotHighlight;
         [SerializeField] private Button button;
-        
+
         [Header("格子类型")]
         public SlotType slotType;
         public bool isSelected;
-    
+
         //物品信息
         public ItemDetails itemDetails;
         public int itemAmount;
         public int slotIndex;
 
         private InventoryUI inventoryUI => GetComponentInParent<InventoryUI>();
-        
+
         private void Start()
         {
             isSelected = false;
-    
-            if (itemDetails.itemID == 0)
+
+            if (itemDetails == null)
                 UpdateEmptySlot();
         }
-    
+
         /// <summary>
         /// 更新格子信息
         /// </summary>
@@ -41,23 +41,29 @@ namespace MyFarm.Inventory
         {
             itemDetails = item;
             itemAmount = amount;
-            
+
             slotImage.sprite = item.itemIcon;
             slotImage.enabled = true;
-            
+
             amountText.text = amount.ToString();
-            
+
             button.interactable = true;
         }
-        
+
         /// <summary>
         /// 更新空格子信息
         /// </summary>
         public void UpdateEmptySlot()
         {
             if (!isSelected)
+            {
                 isSelected = false;
-    
+
+                inventoryUI.UpdateHighlight(-1);
+                EventHandler.CallItemSelectedEvent(itemDetails, isSelected);
+            }
+
+            itemDetails = null;
             slotImage.enabled = false;
             amountText.text = string.Empty;
             button.interactable = false;
@@ -65,11 +71,11 @@ namespace MyFarm.Inventory
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (itemAmount == 0)
+            if (itemDetails == null)
                 return;
 
             isSelected = !isSelected;
-            
+
             inventoryUI.UpdateHighlight(slotIndex);
 
             if (slotType == SlotType.Bag)
@@ -78,7 +84,7 @@ namespace MyFarm.Inventory
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (itemAmount != 0)
+            if (itemDetails != null)
             {
                 inventoryUI.dragItem.enabled = true;
                 inventoryUI.dragItem.sprite = slotImage.sprite;
@@ -104,13 +110,13 @@ namespace MyFarm.Inventory
                 SlotUI targetSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<SlotUI>();
                 if (targetSlot == null)
                     return;
-                
+
                 // 在 Player 自身背包范围内交换
                 if (slotType == SlotType.Bag && targetSlot.slotType == SlotType.Bag)
                 {
                     InventoryManager.Instance.SwapItem(slotIndex, targetSlot.slotIndex);
                 }
-                
+
                 // 清除所有高亮
                 inventoryUI.UpdateHighlight(-1);
             }

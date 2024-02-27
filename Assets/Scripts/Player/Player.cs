@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
         EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
         EventHandler.PlayerCanMoveEvent += OnPlayerCanMoveEvent;
         EventHandler.MoveToPosition += OnMoveToPosition;
+        EventHandler.MouseClickedEvent += OnMouseClickedEvent;
     }
 
     private void OnDisable()
@@ -33,6 +34,13 @@ public class Player : MonoBehaviour
         EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
         EventHandler.PlayerCanMoveEvent -= OnPlayerCanMoveEvent;
         EventHandler.MoveToPosition -= OnMoveToPosition;
+        EventHandler.MouseClickedEvent -= OnMouseClickedEvent;
+    }
+
+    private void OnMouseClickedEvent(Vector3 pos, ItemDetails itemDetails)
+    {
+        //todo:人物动画
+        EventHandler.CallExecuteActionAfterAnimation(pos, itemDetails);
     }
 
     private void OnBeforeSceneUnloadEvent()

@@ -42,13 +42,16 @@ public class AnimatorOverride : MonoBehaviour
     {
         PartType currentPartType = PartType.None;
 
-        switch (itemDetails.itemType)
+        if (itemDetails != null)
         {
-            case ItemType.Seed or ItemType.Commodity:
-                currentPartType = PartType.Carry;
-                break;
-            default:
-                break;
+            switch (itemDetails.itemType)
+            {
+                case ItemType.Seed or ItemType.Commodity:
+                    currentPartType = PartType.Carry;
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (!isSelected)
