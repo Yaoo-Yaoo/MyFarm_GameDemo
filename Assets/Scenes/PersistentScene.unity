@@ -273,6 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 5366355960660801438, guid: 1fb7d9d671c1fd645acdad1e817162b9, type: 3}
+  bounceItemPrefab: {fileID: 3836187324026589178, guid: c6426a5e5211a9b4ab6ddc6a19948fe5, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
