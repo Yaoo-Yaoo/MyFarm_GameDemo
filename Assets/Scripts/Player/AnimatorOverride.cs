@@ -49,6 +49,9 @@ public class AnimatorOverride : MonoBehaviour
                 case ItemType.Seed or ItemType.Commodity:
                     currentPartType = PartType.Carry;
                     break;
+                case ItemType.HoeTool:
+                    currentPartType = PartType.Hoe;
+                    break;
                 default:
                     break;
             }

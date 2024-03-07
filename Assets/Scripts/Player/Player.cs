@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -14,6 +15,9 @@ public class Player : MonoBehaviour
     private bool isMoving;
 
     private bool inputDisable;
+    private float mouseX;
+    private float mouseY;
+    private bool useTool;
 
     private void Awake()
     {
@@ -37,10 +41,49 @@ public class Player : MonoBehaviour
         EventHandler.MouseClickedEvent -= OnMouseClickedEvent;
     }
 
-    private void OnMouseClickedEvent(Vector3 pos, ItemDetails itemDetails)
+    private void OnMouseClickedEvent(Vector3 mouseWorldPos, ItemDetails itemDetails)
     {
         //todo:人物动画
-        EventHandler.CallExecuteActionAfterAnimation(pos, itemDetails);
+        if (itemDetails.itemType != ItemType.Seed && itemDetails.itemType != ItemType.Commodity && itemDetails.itemType != ItemType.Furniture)
+        {
+            mouseX = mouseWorldPos.x - transform.position.x;
+            mouseY = mouseWorldPos.y - transform.position.y;
+
+            if (Mathf.Abs(mouseX) > Mathf.Abs(mouseY))
+                mouseY = 0;
+            else
+                mouseX = 0;
+
+            StartCoroutine(UseToolRoutine(mouseWorldPos, itemDetails));
+        }
+        else
+        {
+            EventHandler.CallExecuteActionAfterAnimation(mouseWorldPos, itemDetails);
+        }
+    }
+
+    private IEnumerator UseToolRoutine(Vector3 mouseWorldPos, ItemDetails itemDetails)
+    {
+        useTool = true;
+        inputDisable = true;
+        yield return null;
+
+        foreach (var anim in animators)
+        {
+            anim.SetTrigger("useTool");
+            // 人物面朝方向
+            anim.SetFloat("InputX", mouseX);
+            anim.SetFloat("InputY", mouseY);
+        }
+        yield return new WaitForSeconds(0.45f);
+
+        EventHandler.CallExecuteActionAfterAnimation(mouseWorldPos, itemDetails);
+
+        yield return new WaitForSeconds(0.25f);
+
+        // 等待动画结束
+        useTool = false;
+        inputDisable = false;
     }
 
     private void OnBeforeSceneUnloadEvent()
@@ -107,6 +150,8 @@ public class Player : MonoBehaviour
         foreach (Animator anim in animators)
         {
             anim.SetBool("IsMoving", isMoving);
+            anim.SetFloat("MouseX", mouseX);
+            anim.SetFloat("MouseY", mouseY);
 
             if (isMoving)
             {
