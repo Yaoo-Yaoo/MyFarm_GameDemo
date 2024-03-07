@@ -875,8 +875,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1811926047
+  m_SortingLayer: 8
   m_SortingOrder: 2
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1355,17 +1355,35 @@ MonoBehaviour:
   holdItem: {fileID: 745333353}
   animatorTypes:
   - partType: 0
+    partName: 0
+    overrideController: {fileID: 22100000, guid: df3d1d5699c0f394faeca310fea1216e, type: 2}
+  - partType: 3
+    partName: 0
+    overrideController: {fileID: 22100000, guid: 865a4a25f77d9164abdbf4101540f99e, type: 2}
+  - partType: 0
     partName: 2
     overrideController: {fileID: 22100000, guid: 383cdc31dbbfd1e4ba1461919a53781c, type: 2}
   - partType: 1
     partName: 2
     overrideController: {fileID: 22100000, guid: 389aabc9b8d5b38428d43b9be3811212, type: 2}
+  - partType: 3
+    partName: 2
+    overrideController: {fileID: 22100000, guid: dff041fdef48ca041ac81cc0f63096af, type: 2}
+  - partType: 0
+    partName: 1
+    overrideController: {fileID: 22100000, guid: 09f347c95cf30044c9f66e2dfbde0c17, type: 2}
+  - partType: 3
+    partName: 1
+    overrideController: {fileID: 22100000, guid: e893313e010da9c488ced3a7d5a26ef7, type: 2}
   - partType: 0
     partName: 3
     overrideController: {fileID: 22100000, guid: e210ccd53eee9694196cbe62119e7162, type: 2}
   - partType: 2
     partName: 3
     overrideController: {fileID: 22100000, guid: 2f4725b3c1301fc4bb52c04bcbd58616, type: 2}
+  - partType: 3
+    partName: 3
+    overrideController: {fileID: 22100000, guid: 02b366bf744155e45835762ccc7270ee, type: 2}
 --- !u!1 &1920633510
 GameObject:
   m_ObjectHideFlags: 0

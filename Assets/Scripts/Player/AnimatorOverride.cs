@@ -52,6 +52,9 @@ public class AnimatorOverride : MonoBehaviour
                 case ItemType.HoeTool:
                     currentPartType = PartType.Hoe;
                     break;
+                case ItemType.WaterTool:
+                    currentPartType = PartType.Water;
+                    break;
                 default:
                     break;
             }
