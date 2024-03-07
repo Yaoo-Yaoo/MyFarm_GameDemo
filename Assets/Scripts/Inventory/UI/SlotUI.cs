@@ -55,7 +55,7 @@ namespace MyFarm.Inventory
         /// </summary>
         public void UpdateEmptySlot()
         {
-            if (!isSelected)
+            if (isSelected)
             {
                 isSelected = false;
 
